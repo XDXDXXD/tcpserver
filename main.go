@@ -95,7 +95,11 @@ func serveTCP() {
 		log.Println("net.Listen failed", err.Error())
 		os.Exit(1)
 	}
-	defer l.Close()
+	defer func() {
+		if err := l.Close(); err != nil {
+			log.Println("l.Close failed", err.Error())
+		}
+	}()
 	log.Println("Listen to port:" + portString)
 
 	for {
